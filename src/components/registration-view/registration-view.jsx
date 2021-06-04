@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop=types';
+import PropTypes from 'prop-types';
 
 export function RegistrationView(props) {
     const [username, setUsername] = useState('');
@@ -10,7 +10,7 @@ export function RegistrationView(props) {
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log(username, password, email, birthdate);
-        props.onRegister(username);
+        props.regData(username);
     }
 
     return (
@@ -40,5 +40,5 @@ export function RegistrationView(props) {
 }
 
 RegistrationView.propTypes = {
-    onRegister: PropTypes.func.isRequired
+    regData: PropTypes.func.isRequired
 };

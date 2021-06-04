@@ -13,7 +13,8 @@ export class MainView extends React.Component {
         this.state = {
             movies: [],
             selectedMovie : null,
-            user: null
+            user: null,
+            registerd: true
         }
     }
 
@@ -41,10 +42,10 @@ export class MainView extends React.Component {
         });
     }
 
-    onRegister(register) {
+    changeReg(regStatus) {
         this.setState({
-            register
-        });
+            registered: regStatus
+        })
     }
 
     onBackClick() {
@@ -53,17 +54,12 @@ export class MainView extends React.Component {
         });
     }
 
-    toggleRegister = (e) => {
-        e.preventDefault();
-        this.setState({
-            register: !this.state.register
-        })
-    }
-
     render() {
-        const { movies, selectedMovie, register } = this.state;
-        if (register) return <RegistrationView onRegister={register => this.onRegister(register)} toggleRegister={this.toggleRegister} />;
-        if (!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
+        const { movies, selectedMovie, user, registered } = this.state;
+        if (!user && registered) return <LoginView regData={Status => this.changeReg(Status)} loggingIn={user => this.onLoggedIn(user)} />; 
+
+        if (!user && !registered) return <RegistrationView  regData={Status => this.changeReg(Status)}/>; 
+        
         if (movies.length === 0) return <div className = "main-view">The list is empty!</div>;
             return (
                 <div className="main-view">

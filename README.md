@@ -11,5 +11,5 @@ Dependencies: -Parcel -React -React-DOM
 Parcel path to index: C:\Users\Daddy\Documents\careerfoundry\myFlix-client\src\index.html
 
 ---
-permalink: /index.html
+permalink: /src/index.html
 ---

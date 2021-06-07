@@ -9,3 +9,7 @@ User Stories: To be able to retrieve the list of movies, displaying movie title,
 Dependencies: -Parcel -React -React-DOM
 
 Parcel path to index: C:\Users\Daddy\Documents\careerfoundry\myFlix-client\src\index.html
+
+---
+permalink: /index.html
+---

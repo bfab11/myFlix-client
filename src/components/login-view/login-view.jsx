@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import './login-view.scss';
+import PropTypes from 'prop-types';
+import Button from 'react-bootstrap/Button';
 
 export function LoginView(props) {
     const [ username, setUsername ] = useState('');
@@ -13,16 +16,32 @@ export function LoginView(props) {
     };
 
     return (
-        <form>
-            <label>
+        <form className="login-form">
+            <label className="loginput">
                 Username:
                 <input type="text" value={username} onChange={e => setUsername(e.target.value)} />
-            </label>
-            <label>
+            </label><br />
+            <label className="loginput">
                 Password:
                 <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
-            </label>
-            <button type="submit" onClick={handleSubmit}>Submit</button>
+            </label><br />
+            <span>
+                <Button variant="outline-dark" type="submit" onClick={handleSubmit}>Submit</Button>
+                <Button variant="outline-dark" type="secondary" onClick={props.toggleRegister}>Register</Button>
+            </span>
         </form>
     );
 }
+
+export function Button({ label }) {
+    return <button>{label}</button>
+}
+
+LoginView.propTypes = {
+    user: PropTypes.shape({
+        username: PropTypes.string.isRequired,
+        password: PropTypes.string.isRequired
+    }),
+    onLoggedIn: PropTypes.func.isRequired,
+    onRegister: PropTypes.func,
+};

@@ -31,9 +31,9 @@ export class MovieCard extends React.Component {
       removeFromFavorites() {
         const user = localStorage.getItem('user');
         const token = localStorage.getItem('token');
-        const movieId = this.props.movie._id
+        const movieId = this.props.movie_id
         axios
-            .delete(`https://myflixdbapp.herokuapp.com/users/${user}/movies/${movieId}`,
+            .delete(`https://myflixdbapp.herokuapp.com/users/${user}/Favorites/${movieId}`,
               {
                 headers: { Authorization: `Bearer ${token}` }
               }
@@ -55,7 +55,7 @@ export class MovieCard extends React.Component {
         const user = localStorage.getItem('user');
         const token = localStorage.getItem('token')
         axios
-        .post(`https://myflixdbapp.herokuapp.com/users/${user}/movies/${movieId}`,
+        .post(`https://myflixdbapp.herokuapp.com/users/${user}/Favorites/${movieId}`,
           {},
           {
             headers: { Authorization: `Bearer ${token}` }
@@ -76,7 +76,7 @@ export class MovieCard extends React.Component {
       toggleClass() {
         toggleClick = true;
         if (!this.state.fav) {
-          this.addToFavorites(this.props.movie._id);
+          this.addToFavorites(this.props.movie_id);
         } else {
           this.removeFromFavorites();
         }
@@ -84,17 +84,17 @@ export class MovieCard extends React.Component {
       }
 
     render() {
-        const { movieData, selectedMovie } = this.props;
-        console.log(movieData);
+        const { movie } = this.props;
+        console.log(movie, 'movie state');
         return (
             <CardDeck>
                 <Card border="dark" style={{ width: '18rem' }}>
-                    <Card.Img variant="top" src={movieData.ImagePath} />
+                    {/* <Card.Img variant="top" src={movie.ImagePath} /> */}
                     <Card.Body>
                         <Card.Title>
-                            {movieData.Title}
+                            {movie.Title}
                         </Card.Title>
-                        <Card.Text>{movieData.Description}</Card.Text>
+                        <Card.Text>{movie.Description}</Card.Text>
                     </Card.Body>
                     <Card.Footer>
                             <Button
@@ -104,7 +104,7 @@ export class MovieCard extends React.Component {
                             >
                                 &#x2605;
                             </Button>
-                        <Link to={`/movies/${movieData._id}`}>
+                        <Link to={`/movies/${movie._id}`}>
                             <Button variant="outline-dark">Open</Button>
                         </Link>
                     </Card.Footer>
@@ -115,18 +115,8 @@ export class MovieCard extends React.Component {
 }
 
 MovieCard.propTypes = {
-    movieData: PropTypes.shape({
-        Title: PropTypes.string.isRequired,
-        Description: PropTypes.string.isRequired,
-        Genre: PropTypes.shape({
-            Name: PropTypes.string.isRequired,
-            Description: PropTypes.string.isRequired
-        }),
-        Director: PropTypes.shape({
-            Name: PropTypes.string.isRequired,
-            Description: PropTypes.string.isRequired,
-            Birth: PropTypes.string.isRequired
-        }),
-        ImagePath: PropTypes.string.isRequired
-    }).isRequired
+  movie: PropTypes.shape({
+    title: PropTypes.string
+  }).isRequired,
+  onClick: PropTypes.func.isRequired
 };

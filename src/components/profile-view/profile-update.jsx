@@ -52,13 +52,13 @@ export default function ProfileUpdate(props) {
         };
         axios.put(
             `https://myflixdbapp.herokuapp.com/users/${user}`,
-            userInfo,
+            userData,
             {
                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
             },
         )
         .then(response => {
-            props.updateUser(userInfo);
+            props.updateUser(userData);
             alert('User info was updated successfully');
         })
         .catch(e => {
@@ -112,7 +112,7 @@ export default function ProfileUpdate(props) {
                                     <Form.Label>Birthday: </Form.Label>
                                     <Form.Control
 
-                                        value={birthday}
+                                        value={birthday, birthday.slice(0, 10)}
                                         onChange={e => setBirthday(e.target.value)}
                                         placeholder="DOB in format mm/dd/yyyy"
                                     />

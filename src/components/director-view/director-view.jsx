@@ -1,43 +1,22 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
-import PropTypes from 'prop-types';
 
+import { connect } from 'react-redux';
 
-export class DirectorView extends React.Component {
-  render() {
-    const { directorData, onBackClick } = this.props;
-    console.log(directorData);
-
-    return (
-
-      <div className="director-view">
-        <div className="my-2">
-          <span className="label font-weight-bold">Director: </span>
-          <span className="value">{directorData.Name}</span>
-        </div>
-        <div className="my-2">
-          <span className="label font-weight-bold">Bio: </span>
-          <span className="value">{directorData.Description}</span>
-        </div>
-        <div className="my-2">
-          <span className="label font-weight-bold">Born: </span>
-          <span className="value">{directorData.Birth}</span>
-        </div>
-        <div className="my-2">
-          <span className="label font-weight-bold">Death: </span>
-          <span className="value">{directorData.Death}</span>
-        </div>
-          <Button variant="outline-dark" className="my-3" onClick={()=>onBackClick()}>Back</Button>
-      </div>
-    );
-  }
+function DirectorView(props) {
+  const { movies, directorName, onBackClick } = props;
+  if (!movies || !movies.length) return null;
+  const director = movies.find(m => m.Director.Name == directorName).Director
+  console.log(director);
+  return (
+    <div className="movie-view">
+      <h5>{director.Name}</h5>
+      <div>{director.Description}</div>
+      <div>{director.Birth}</div>
+      <div>{director.Death}</div><br />
+      <Button variant="outline-dark" onClick={() => { onBackClick(null); }}>Back</Button>
+    </div>
+  );
 }
 
-DirectorView.propTypes = {
-  directorData: PropTypes.shape({
-      Name: PropTypes.string.isRequired,
-      Description: PropTypes.string.isRequired,
-      Birth: PropTypes.string.isRequired,
-      Death: PropTypes.string.isRequired
-  }).isRequired
-};
+export default connect(({movies}) => ({movies}))(DirectorView);

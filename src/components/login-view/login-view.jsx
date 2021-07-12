@@ -4,54 +4,87 @@ import PropTypes from 'prop-types';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import axios from 'axios';
+import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Card from 'react-bootstrap/Card';
 
-export function LoginView(props) {
-    const [ username, setUsername ] = useState('');
-    const [ password, setPassword ] = useState('');
-
+export function LoginView (props) {
+    /* call useState() method with an empty string, the initial value of the login variable. This method returns an array that you destructure */
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const validated = useState(null);
+    console.log('LoginView Loaded');
+  
     const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log(username, password);
-        // Send a request to the server for authentication
-        axios.post('https://myflixdbapp.herokuapp.com/login', {
-            Username: username,
-            Password: password
-        })
-        .then(response => {
-            const data = response.data;
-            props.onLoggedIn(data);
-        })
-        .catch(e => {
-            console.log('no such user')
-        });
+      e.preventDefault();
+      /* Send a request to the server for authentication */
+      axios.post(`https://myflixdbapp.herokuapp.com/login`, {
+        Username: username,
+        Password: password
+    })
+      .then(response => {
+        const data = response.data;
+        console.log('before', data);
+        props.onLoggedIn(data);
+        console.log('login success', data);
+      })
+      .catch(e => {
+        console.log('user login error');
+        alert('Invalid username or password');
+      });
     };
-
+  
     return (
-        <Form>
-            <Form.Group controlId="formUsername">
-                <Form.Label>Username:</Form.Label>
-                    <Form.Control type="text" placeholder="Enter username" value={username} onChange={e => setUsername(e.target.value)} />
-            </Form.Group>
-
-            <Form.Group controlId="formPassword">
-                <Form.Label>Password:</Form.Label>
-                <Form.Control type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} />
-            </Form.Group>
-            <Button variant="outline-dark" type="submit" onClick={handleSubmit}>Submit</Button>
-            <Button variant="outline-dark" type="secondary" onClick={props.toggleRegister}>Register</Button>
-        </Form>
+      <Row className="d-flex justify-content-center">
+        <Card className="align-self-center p-3 m-1">
+          <Col>
+            <Form noValidate validated={validated}>
+              <br></br>
+                <h3>Login</h3>
+                <Form.Group controlId="formUsername">
+                  <Form.Label>Username:</Form.Label>
+                  <Form.Control
+                  type="text"
+                  value={username}
+                  placeholder="Enter username"
+                  onChange={e => setUsername(e.target.value)}
+                  autoComplete="username"
+                  pattern='[a-zA-Z0-9]{5,}'
+                  required minLength="5" />
+                  <Form.Control.Feedback type='invalid'>Enter your Username with at least 5 characters</Form.Control.Feedback>
+                  </Form.Group>
+                  <Form.Group controlId="formPassword">
+                  <Form.Label>Password:</Form.Label>
+                  <Form.Control
+                    value={password}
+                    type="password"
+                    placeholder="Password"
+                    onChange={e => setPassword(e.target.value)}
+                    autoComplete="password" 
+                    minLength="5"
+                    required />
+                    <Form.Control.Feedback type='invalid'>Enter your password with at least 5 characters</Form.Control.Feedback>
+                </Form.Group>
+                  <Button variant="outline-dark" type="submit" onClick={handleSubmit}>Submit </Button>
+                  <hr />
+                  <p>Don't have an account?</p>
+                  <Link to="/register">
+                    <Button variant="outline-dark" type="button"> Register</Button>
+                  </Link><br />
+            </Form>
+          </Col>
+        </Card>
+      </Row>
     );
-}
-
-export function Button({ label }) {
-    return <button>{label}</button>
-}
-
-LoginView.propTypes = {
-    user: PropTypes.shape({
-        username: PropTypes.string.isRequired,
-        password: PropTypes.string.isRequired
-    }),
-    onLoggedIn: PropTypes.func.isRequired,
-    onRegister: PropTypes.func,
-};
+  }
+  LoginView.propTypes = {
+    onLoggedIn: PropTypes.func.isRequired
+  };
+  
+  const mapDispatchToProps = (dispatch) => ({
+    handleSubmit: (username, password) => dispatch(handleSubmit(username, password))
+  });
+  
+  export default connect(null, mapDispatchToProps)(LoginView);

@@ -9,7 +9,7 @@ import Card from 'react-bootstrap/Card';
 import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
 
-export default function ProfileView(props) {
+function ProfileView(props) {
     const { Username, Email, Birthday, FavoriteMovies = [] } = props.userData;
     const movies = props.movies;
     const favorites = movies.filter(movie => FavoriteMovies.indexOf(movie._id) > -1);

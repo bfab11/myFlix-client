@@ -28,26 +28,27 @@ export class MovieCard extends React.Component {
         }
       }
     
-      removeFromFavorites() {
+      removeFromFavorites(movieId) {
         const user = localStorage.getItem('user');
         const token = localStorage.getItem('token');
-        const movieId = this.props.movie_id
         axios
-            .delete(`https://myflixdbapp.herokuapp.com/users/${user}/Favorites/${movieId}`,
+            .delete(`https://myflixdbapp.herokuapp.com/users/${user}/favorites/${movieId}`,
               {
                 headers: { Authorization: `Bearer ${token}` }
               }
             )
             .then(response => {
-              console.log(response);
+              console.log(response, 'remove from favorites');
               this.setState({
                 fav: false
               });
               this.props.removeFromFavorites(movieId);
+              alert('Movie was removed from Favorites');
     
             })
             .catch(e => {
               console.log(e);
+              alert('Movie was not removed');
             });
       }
     
@@ -55,7 +56,7 @@ export class MovieCard extends React.Component {
         const user = localStorage.getItem('user');
         const token = localStorage.getItem('token')
         axios
-        .post(`https://myflixdbapp.herokuapp.com/users/${user}/Favorites/${movieId}`,
+        .post(`https://myflixdbapp.herokuapp.com/users/${user}/favorites/${movieId}`,
           {},
           {
             headers: { Authorization: `Bearer ${token}` }
@@ -67,18 +68,21 @@ export class MovieCard extends React.Component {
             fav: true
           });
           this.props.addToFavorites(movieId);
+          alert('Movie added to Favorites successfully!');
         })
         .catch(e => {
           console.log(e);
+          alert('Movie was not added');
         });
       }
     
       toggleClass() {
+        console.log(this.props, 'toggleClass props');
         toggleClick = true;
         if (!this.state.fav) {
-          this.addToFavorites(this.props.movie_id);
+          this.addToFavorites(this.props.movie._id);
         } else {
-          this.removeFromFavorites();
+          this.removeFromFavorites(this.props.movie._id);
         }
     
       }

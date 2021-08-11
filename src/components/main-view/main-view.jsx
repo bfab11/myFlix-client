@@ -21,7 +21,7 @@ import NavBar from '../navbar/navbar.jsx';
 import ProfileUpdate from '../profile-view/profile-update';
 import ProfileView from '../profile-view/profile-view';
 
-export class MainView extends React.Component {
+class MainView extends React.Component {
 
     constructor(){
         super();

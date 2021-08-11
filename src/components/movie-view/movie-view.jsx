@@ -8,7 +8,7 @@ import Card from 'react-bootstrap/Card';
 
 import { connect } from 'react-redux';
 
-export default function MovieView(props) {
+function MovieView(props) {
   const { movies, movieId } = props;
   if (!movies || !movies.length) return null;
   const movie = movies.find(m => m._id == movieId);
